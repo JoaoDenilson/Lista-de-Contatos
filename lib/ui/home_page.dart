@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:agenda_contatos/ui/contact_page.dart';
 import 'package:flutter/material.dart';
 import 'package:agenda_contatos/helpers/contact_helper.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -44,8 +45,8 @@ class _homePageState extends State<homePage> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                      image: //contact.img != null ?
-                      //FileImage(File(contact.img)) :
+                      image: contact.img != null ?
+                      FileImage(File(contact.img)) :
                       AssetImage("images/person.png"),
                       fit: BoxFit.cover
                     )
@@ -119,10 +120,20 @@ class _homePageState extends State<homePage> {
   }
 
   
-  void _showContactPage({Contact contact}){
-    print("Contac page");
+  void _showContactPage({Contact contact}) async{
+    final recContact = await Navigator.push(context,
+      MaterialPageRoute(builder: (context) => ContactPage(contact: contact))
+    );
+    if(recContact != null){
+      if(contact != null){
+        await helper.updateContact(contact);
+      }
+      else{
+        await helper.saveContact(contact);
+      }
+      _getAllContacts();
+    }
   }
-
 
   @override
   Widget build(BuildContext context) {
