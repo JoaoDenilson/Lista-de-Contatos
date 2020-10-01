@@ -62,6 +62,18 @@ class ContactHelper{
     return listContacts;
   }
 
+  Future<List> searchContact(String q) async{
+    Database dbContact = await db;
+    List listMap = await dbContact.rawQuery(
+      "SELECT * FROM $_tableName WHERE name LIKE '%$q%' or email LIKE '%$q%' or phone LIKE '%$q%'"
+    );
+    List<Contact> searchContacts = List();
+    for(Map m in listMap){
+      searchContacts.add(Contact.fromMap(m));
+    }
+    return searchContacts;
+  }
+
   Future close () async {
     Database dbContact = await db;
     await dbContact.close();
