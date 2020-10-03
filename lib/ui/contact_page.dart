@@ -142,7 +142,7 @@ class _ContactPageState extends State<ContactPage> {
           ),
         ),
       ), 
-      onWillPop: _requestPop();
+      onWillPop: _requestPop,
     );
   }
 }

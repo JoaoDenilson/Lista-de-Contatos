@@ -36,7 +36,7 @@ class ContactHelper{
 
   Future<Contact> getContact(int id) async{
      Database dbContact = await db;
-     List<Map> maps = await dbContact.query(_tableName, columns: ["id","name","email", "phone", "img"], where: "id: = ?", whereArgs: [id]);
+     List<Map> maps = await dbContact.query(_tableName, columns: ["id","name","email", "phone", "img"], where: "id = ?", whereArgs: [id]);
      if(maps.length > 0){
        return Contact.fromMap(maps.first);
      }
@@ -44,12 +44,12 @@ class ContactHelper{
 
   Future<int> deleteContact(int id) async {
     Database dbContact = await db;
-    return await dbContact.delete(_tableName, where:  "id: = ?", whereArgs: [id]);
+    return await dbContact.delete(_tableName, where: "id = ?", whereArgs: [id]);
   }
 
   Future<int> updateContact(Contact contact) async {
     Database dbContact = await db;
-    return await dbContact.update(_tableName, contact.toMap(), where:  "id: = ?", whereArgs: [contact.id]);
+    return await dbContact.update(_tableName, contact.toMap(), where:  "id = ?", whereArgs: [contact.id]);
   }
 
   Future<List> getAllContact() async {

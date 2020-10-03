@@ -15,6 +15,7 @@ class _homePageState extends State<homePage> {
   ContactHelper helper = ContactHelper();
   List<Contact> _contacts = List(); 
   
+
   void _getAllContacts(){
     helper.getAllContact().then((list) {
       setState(() {
@@ -126,10 +127,10 @@ class _homePageState extends State<homePage> {
     );
     if(recContact != null){
       if(contact != null){
-        await helper.updateContact(contact);
+        await helper.updateContact(recContact);
       }
       else{
-        await helper.saveContact(contact);
+        await helper.saveContact(recContact); 
       }
       _getAllContacts();
     }
@@ -151,13 +152,36 @@ class _homePageState extends State<homePage> {
           _showContactPage();
         },
       ),
-      body: ListView.builder(
-        padding: EdgeInsets.all(10.0),
-        itemCount: _contacts.length,
-        itemBuilder: (context,index){
-          return _contactCard(context,index);
-        },
-      ),
+      body: Column(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(10.0),
+            child: TextField(
+              decoration: InputDecoration(
+                  labelText: "Pesquise",
+                  labelStyle: TextStyle(color: Colors.black),
+                  border: OutlineInputBorder()),
+              style: TextStyle(color: Colors.black, fontSize: 20.0),
+              textAlign: TextAlign.left,
+              onSubmitted: (text) {
+                setState(() {
+                   helper.searchContact(text);
+                });
+              },
+            ),
+          ),
+
+          Expanded(
+            child: ListView.builder(
+              padding: EdgeInsets.all(10.0),
+              itemCount: _contacts.length,
+              itemBuilder: (context,index){
+                return _contactCard(context,index);
+              },
+            ),
+          )
+        ],
+      ) 
     );
   }
 }
